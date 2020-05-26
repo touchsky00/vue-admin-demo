@@ -5,7 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userInfo:{}
+    userInfo:{
+      name:'admin',
+      password:'hello'
+    }
   },
   mutations: {
     refleshUserInfo(state,playload) {

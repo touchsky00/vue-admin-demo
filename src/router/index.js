@@ -53,9 +53,9 @@ const routes = [
         hidden: true,
         children: [
             {
-                path:'/account/upload/echarts',
+                path:'/account/upload/excel',
                 name:'Xlsx',
-                component: () => import('../views/UploadEchart.vue'),
+                component: () => import('../views/UploadExcel.vue'),
             }
         ]
     }

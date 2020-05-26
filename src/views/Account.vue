@@ -6,8 +6,8 @@
 			<div class="table-header-warpper">
 				<div class="table-title">用户列表</div>
 				<div class="table-header-right">
-					<button class="operate-btn-primary" style="margin-right:10px;" @click="toUploadExcel">上传excel</button>
-					<button class="operate-btn-primary" @click="addVisableDialogShow">添加用户</button>
+					<el-button type="primary" @click="toUploadExcel" style="margin-right:10px;" >上传excel</el-button>
+					<el-button type="primary" @click="addVisableDialogShow">添加用户</el-button>
 				</div>
 			</div>
 			<!-- 表格描述 -->
@@ -17,7 +17,7 @@
 			<!-- 表格内容 -->
 			<div class="table-content">
 				<el-table
-					:data="userList"
+					:data="listDisplay"
 					size="mini"
 					:header-cell-style="{color:'#333333',fontSize:'13px',fontWeight:'500'}"
 					:cell-style="{color:'#575757',fontSize:'13px',fontWeight:'400'}"
@@ -51,7 +51,7 @@
 					<el-table-column align="center" prop="operation" label="操作" width="100%">
 						<template slot-scope="scope">
 							<button @click="editUserData(scope)" class="operate-btn-primary" style="margin-right:2px;">编辑</button>
-							<button class="operate-btn-danger">移除</button>
+							<button class="operate-btn-danger" @click="removeUserData(scope)">移除</button>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -62,7 +62,7 @@
 					style="margin-top:20px;"
 					layout="prev, pager, next"
 					:total="listTotalcount"
-					:page-size="10"
+					:page-size="pageSize"
 					@current-change="currentChange"
 				></el-pagination>
 			</div>
@@ -82,9 +82,10 @@
 export default {
 	data() {
 		return {
-			listTotalcount: 30, //表单总条数
-			pageSize: 10, //每一页表单数
+			listTotalcount: 10, //表单总条数
+			pageSize: 20, //每一页表单数
 			pageNo: 1, //当前页
+			listDisplay: [],  //表格数据显示
 			tableHeight: window.innerHeight - 280, // 表格高度
 			//表头导航
 			tableNav: [
@@ -203,7 +204,8 @@ export default {
 			//弹窗
 			isDialogVisable: false,
 			dialogContent: [], //content参数{content,name,label,rules,placeholder}
-			dialogTitle: ""
+			dialogTitle: "",
+			editId: 'add',		//编辑弹窗id
 		};
 	},
 	methods: {
@@ -220,7 +222,7 @@ export default {
 		// 监听页码变化
 		currentChange(pageNo) {
 			this.pageNo = pageNo;
-			console.log(this.pageNo);
+			this.refreshListDispaly();
 		},
 		//显示添加弹窗
 		addVisableDialogShow() {
@@ -271,6 +273,7 @@ export default {
 		//显示编辑弹窗
 		editUserData(scope) {
 			let content = scope.row;
+			this.editId = scope.row.id;
 			let editContent = [
 				{
 					content: "",
@@ -329,14 +332,75 @@ export default {
 			this.dialogTitle = "编辑用户"
 			this.dialogContent = editContent;
 		},
-		// 获取弹窗数据
+		// 获取添加／编辑弹窗数据
 		getRulesForm(data) {
-			console.log(data);
+			if(this.editId === 'add') {
+				let newUser = data;
+				newUser['id'] = Date.now().toString(36);
+				this.userList.push(data);
+				this.refreshListDispaly();
+				this.$message.success('添加成功');
+			} else {
+				let userList = this.userList
+				for(let i=0; i< userList.length; i++) {
+					if(userList[i].id == this.editId) {
+						userList[i] = Object.assign(userList[i],data);
+						break;
+					}
+				}
+				this.userList = userList;
+				this.editId = 'add';
+				this.refreshListDispaly();
+				this.$message.success('编辑成功');
+			}
+			this.isDialogVisable = false;
+		},
+		//删除数据
+		async removeUserData(scope) {
+			try {
+				await this.$confirm('此操作将删除该条数据', {
+                    confirmButtonText:'确认',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                });
+			}
+			catch(err) {
+				return;
+			}
+			let id = scope.row.id;
+			let userList = this.userList;
+			for(let i=0; i<userList.length; i++) {
+				if(id === userList[i].id) {
+					userList.splice(i,1);
+				}
+			}
+			this.userList = userList;
+			this.refreshListDispaly();
 		},
 		//跳转上传页面
 		toUploadExcel() {
-			this.$router.push('/account/upload/echarts');
+			this.$router.push('/account/upload/excel');
+		},
+		//添加上传excel的数据
+		addUploadList() {
+			let { path , data } = this.$route.params
+			if(path === '/account/upload/excel' && data.length !== 0) {
+				this.userList = this.userList.concat(data);
+				this.listTotalcount = this.userList.length;
+			}
+			this.listDisplay = this.userList.slice(0,20);
+		},
+		//刷新列表
+		refreshListDispaly() {
+			let num = 0;
+			for(let i = 0; i<this.pageNo; i++) {
+				num += 20;
+			};
+			this.listDisplay = this.userList.slice(num-20,num);
 		}
+	},
+	mounted() {
+		this.addUploadList();
 	}
 };
 </script>

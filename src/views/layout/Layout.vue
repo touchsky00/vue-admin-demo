@@ -1,11 +1,11 @@
 <template>
     <div class="layout-wrapper">
-        <div class="side-bar">
+        <div class="side-bar" v-if="isShowSidebar">
             <div class="logo-wrapper"><img src="../../assets/logo-my.png"/><span>My Admin</span></div>
             <Menu />
         </div>
-        <div class="content-wrapper">
-            <div class="header"><Header /></div>
+        <div id="contentWrapper" class="content-wrapper">
+            <div class="header"><Header @changeSidebarDisplay="changeSidebarDisplay"/></div>
             <div class="content"><router-view></router-view></div>
         </div>
     </div>  
@@ -19,7 +19,19 @@ export default {
     components: { Menu, Header },
     data() {
         return {
-            
+            isShowSidebar: true,
+        }
+    },
+    methods: {
+        changeSidebarDisplay() {
+            this.isShowSidebar = !this.isShowSidebar;
+            var contentWrapper = document.getElementById('contentWrapper');
+            if(!this.isShowSidebar) {
+                contentWrapper.style.paddingLeft = 0;
+            } 
+            if(this.isShowSidebar) {
+                contentWrapper.style.paddingLeft = '180px';
+            }
         }
     }
 }
@@ -47,6 +59,7 @@ export default {
     justify-content: flex-start; 
     flex-wrap: wrap;
     width: 100%;
+    margin: 0 auto;
 }
 .header {
     width: 100%;

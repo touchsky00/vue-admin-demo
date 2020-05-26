@@ -1,8 +1,8 @@
 <template>
     <div class="header-page">
         <div class="header-left">
-            <div class="hover-active">
-                <i class="el-icon-s-fold"></i>
+            <div class="hover-active" @click="changeSidebarDisplay">
+                <i :class="iconClass"></i>
             </div>
         </div>
         <div class="header-right">
@@ -22,9 +22,24 @@
 
 <script>
 export default {
+    data() {
+        return {
+            iconClass:'el-icon-s-fold',
+            isChangeFold: false
+        }
+    },
     methods: {
         logout() {
             this.$router.push('/login');
+        },
+        changeSidebarDisplay() {
+            this.isChangeFold = !this.isChangeFold
+            if(this.isChangeFold) {
+                this.iconClass = 'el-icon-s-unfold'
+            } else {
+                this.iconClass = 'el-icon-s-fold'
+            }
+            this.$emit('changeSidebarDisplay')
         }
     }
 }
