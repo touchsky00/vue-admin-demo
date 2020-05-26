@@ -12,6 +12,27 @@ Vue.use(ElementUI, {size: 'mini'})
 Vue.use(MyDialog)
 Vue.config.productionTip = false
 
+//路由拦截
+router.beforeEach((to, from, next) => {
+    if (to.path == '/login') {
+        next()
+    }
+    else if (JSON.stringify(store.state.userInfo) == "{}") {
+        next({
+            path: '/login'
+        })
+    }
+    else if (to.matched.some((record) => record)) {
+        next()
+    }
+    else {
+        next({
+            path: '/login'
+        })
+    }
+})
+
+
 new Vue({
   router,
   store,

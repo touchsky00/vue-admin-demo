@@ -13,8 +13,7 @@
             <div class="form-right">
                 <MyInput icon="el-icon-user" placeholder="用户名" type="text"/>
                 <MyInput icon="el-icon-key" placeholder="密码" type="password"/>
-                <div style="text-align:left;"><input class="check-box" :checked="checkedState" type="checkbox" value="isRecord"><span class="check-label" @click="changeCheckState">记住密码</span></div>
-                <div class="btn-submit"><button class="btn-login">登录</button></div>
+                <div class="btn-submit"><button class="btn-login" @click="submit">登录</button></div>
             </div>
         </div>
     </div>
@@ -30,7 +29,11 @@ export default {
     },
     data() {
         return {
-            checkedState: false
+            checkedState: false,
+            userInfo: {
+                username:'hello',
+                password:'123456',
+            }
         }
     },
     methods: {
@@ -127,6 +130,12 @@ export default {
             }
             timeOut(moveMeteor, 20);
         },
+        //提交登录
+        submit() {
+            // console.log(this.userInfo)
+            this.$store.commit('refleshUserInfo',)
+            this.$router.push('/')
+        }
     },
     mounted() {
         this.drawMetetor();

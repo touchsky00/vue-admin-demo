@@ -6,13 +6,29 @@
             </div>
         </div>
         <div class="header-right">
-            <div class="hover-user-active">
-                <div>用户名<i class="el-icon-arrow-down"/></div>
-            </div>
+            <el-dropdown trigger="click">
+                <div class="hover-user-active">
+                    <div>用户名<i class="el-icon-arrow-down"/></div>
+                </div>
+                <el-dropdown-menu slot="dropdown" class="user-dropdown-menu">
+                    <el-dropdown-item icon="el-icon-setting" ><span class="desc">重设密码</span></el-dropdown-item>
+                    <el-dropdown-item @click.native="logout" icon="el-icon-back" ><span class="desc">退出登录</span></el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
         </div>
     </div>
 </template>
 
+
+<script>
+export default {
+    methods: {
+        logout() {
+            this.$router.push('/login');
+        }
+    }
+}
+</script>
 
 <style scoped>
 .header-page {
