@@ -15,10 +15,10 @@
 				</div>
 			</div>
 			<div class="form-right">
-				<my-input @keyup.enter="submit" v-model="userinfo.name" icon="el-icon-user" placeholder="用户名" type="text" />
-				<my-input @keyup.enter="submit" v-model="userinfo.password" icon="el-icon-key" placeholder="密码" type="password" />
+				<my-input @keyup.enter="onLogin" v-model="userinfo.name" icon="el-icon-user" placeholder="用户名" type="text" />
+				<my-input @keyup.enter="onLogin" v-model="userinfo.password" icon="el-icon-key" placeholder="密码" type="password" />
 				<div class="btn-submit">
-					<button class="btn-login" @click="submit">登录</button>
+					<button class="btn-login" @click="onLogin">登录</button>
 				</div>
 			</div>
 		</div>
@@ -31,7 +31,6 @@ import { metetor } from "../assets/libs/ultis";
 export default {
 	data() {
 		return {
-			checkedState: false,
 			userinfo: {
 				name: "",
 				password: ""
@@ -39,9 +38,6 @@ export default {
 		};
 	},
 	methods: {
-		changeCheckState() {
-			this.checkedState = !this.checkedState;
-		},
 		drawMetetor() {
 			let h = window.innerHeight;
 			let w = window.innerWidth;
@@ -53,7 +49,7 @@ export default {
         },
         
 		//提交登录
-		submit() {
+		onLogin() {
             let { name, password } = this.userinfo;
 			if (!name || !password) {
                 this.$message.warning('请输入用户名和密码');
