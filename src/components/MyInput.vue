@@ -3,15 +3,17 @@
         <div class="input-up">
             <div class="input-icon"><i :class="icon"></i></div>
             <div class="input-form">
-                <input :placeholder="placeholder" v-model="username" :type="type"/>
+                <input 
+                    @keyup="onEnterClick" 
+                    @blur="onInputBlur" 
+                    :placeholder="placeholder"
+                    :type="type"
+                    :value="inputValue"
+                    :autofocus="autofocus"
+                    @input="updateValue($event.target.value)"
+                    />
             </div>
         </div>
-    
-        <!-- <div class="input-tip">
-            <transition name="input-tip">
-                <span v-if="!username">请输入用户名</span>
-            </transition>
-        </div> -->
     </div>
 </template>
 
@@ -29,15 +31,24 @@ export default {
         type: {
             type: String,
             required: true
-        }
-    },
-    data() {
-        return {
-            isInputFocus: false,
-            username:''
+        },
+        inputValue: {
+            type: String
+        },
+        autofocus: {
+            type: Boolean,
         }
     },
     methods: {
+        onInputBlur(event) {
+            this.$emit("blur", event);
+        },
+        onEnterClick(event) {
+            this.$emit('keyup', event);
+        },
+        updateValue(value) {
+           this.$emit('input', value)
+      }
     }
 }
 </script>

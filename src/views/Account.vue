@@ -55,7 +55,7 @@
 						</template>
 					</el-table-column>
 				</el-table>
-
+				
 				<!-- 表格页码 -->
 				<el-pagination
 					background
@@ -219,11 +219,13 @@ export default {
 				return;
 			}
 		},
+
 		// 监听页码变化
 		currentChange(pageNo) {
 			this.pageNo = pageNo;
 			this.refreshListDispaly();
 		},
+
 		//显示添加弹窗
 		addVisableDialogShow() {
 			let addContent = [
@@ -270,6 +272,7 @@ export default {
 			this.dialogTitle = "添加用户"
 			this.dialogContent = addContent;
 		},
+
 		//显示编辑弹窗
 		editUserData(scope) {
 			let content = scope.row;
@@ -332,6 +335,7 @@ export default {
 			this.dialogTitle = "编辑用户"
 			this.dialogContent = editContent;
 		},
+
 		// 获取添加／编辑弹窗数据
 		getRulesForm(data) {
 			if(this.editId === 'add') {
@@ -355,6 +359,7 @@ export default {
 			}
 			this.isDialogVisable = false;
 		},
+
 		//删除数据
 		async removeUserData(scope) {
 			try {
@@ -377,10 +382,12 @@ export default {
 			this.userList = userList;
 			this.refreshListDispaly();
 		},
+
 		//跳转上传页面
 		toUploadExcel() {
 			this.$router.push('/account/upload/excel');
 		},
+
 		//添加上传excel的数据
 		addUploadList() {
 			let { path , data } = this.$route.params
@@ -390,6 +397,7 @@ export default {
 			}
 			this.listDisplay = this.userList.slice(0,20);
 		},
+
 		//刷新列表
 		refreshListDispaly() {
 			let num = 0;
@@ -397,7 +405,7 @@ export default {
 				num += 20;
 			};
 			this.listDisplay = this.userList.slice(num-20,num);
-		}
+		},
 	},
 	mounted() {
 		this.addUploadList();
@@ -455,5 +463,11 @@ export default {
 	color: #666;
 	width: 90%;
 	text-align: left;
+}
+
+.table-button {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 }
 </style>

@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './assets/public.css'
-import { MyDialog } from './components/index'
+import { MyDialog, MyInput } from './components/index'
 import { MessageBox, Pagination, Upload, Message ,Dialog ,Input, Button, Form, FormItem ,Dropdown, DropdownMenu, DropdownItem, Menu, Submenu, MenuItem, Table, TableColumn,} from 'element-ui';
 
 
@@ -26,27 +26,29 @@ Vue.component(Pagination.name, Pagination)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.use(MyDialog)
+Vue.use(MyInput)
 Vue.config.productionTip = false
 
+
 //路由拦截
-// router.beforeEach((to, from, next) => {
-//     if (to.path == '/login') {
-//         next()
-//     }
-//     else if (JSON.stringify(store.state.userInfo) == "{}") {
-//         next({
-//             path: '/login'
-//         })
-//     }
-//     else if (to.matched.some((record) => record)) {
-//         next()
-//     }
-//     else {
-//         next({
-//             path: '/login'
-//         })
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    if (to.path == '/login') {
+        next()
+    }
+    else if (JSON.stringify(store.state.userinfo.userinfo) == '{}') {
+        next({
+            path: '/login'
+        })
+    }
+    else if (to.matched.some((record) => record)) {
+        next()
+    }
+    else {
+        next({
+            path: '/login'
+        })
+    }
+})
 
 
 new Vue({

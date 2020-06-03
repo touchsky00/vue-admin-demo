@@ -1,7 +1,7 @@
 <template>
     <div class="table-warpper">
         <div class="block-content">
-           echarts
+           Others
         </div>
     </div>
 </template>

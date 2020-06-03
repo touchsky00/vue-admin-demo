@@ -33,16 +33,16 @@ const routes = [
         ]
     },
     {
-        path: '/frend',
+        path: '/others',
         name: 'Frend',
         component: Layout,
-        meta: { title: 'Echarts', icon: 'el-icon-star-off' },
+        meta: { title: 'Others', icon: 'el-icon-star-off' },
         children: [
             {
-                path:'/frend/list',
-                name:'frendList',
-                meta: { title: 'Echarts', icon: 'el-icon-star-off' },
-                component: () => import('../views/Echarts.vue'),
+                path:'/others/list',
+                name:'otherList',
+                meta: { title: 'Others', icon: 'el-icon-star-off' },
+                component: () => import('../views/Others.vue'),
             },
         ]
     },
